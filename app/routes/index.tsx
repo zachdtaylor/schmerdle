@@ -31,8 +31,8 @@ export default function Index() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
   return (
-    <div className="flex justify-center">
-      <div>
+    <div className="h-[calc(100vh-10rem)] flex flex-col justify-between">
+      <div className="flex justify-center">
         <div className="mb-8">
           {Array.from(Array(allowedGuesses)).map((_, idx) => {
             const word =
@@ -52,16 +52,26 @@ export default function Index() {
             );
           })}
         </div>
-        <Keyboard
-          onClick={(key) =>
-            key === "enter"
-              ? game.submitGuess()
-              : key === "back"
-              ? game.removeLetter()
-              : game.addLetter(key)
-          }
-        />
       </div>
+      {game.state.gameState === "lost" ? (
+        <div>
+          <p className="text-center">Oof 😬</p>
+          <p className="text-center">
+            The word was{" "}
+            <span className="text-green-600">{game.state.word}</span>
+          </p>
+        </div>
+      ) : null}
+      <Keyboard
+        gameState={game.state}
+        onClick={(key) =>
+          key === "enter"
+            ? game.submitGuess()
+            : key === "back"
+            ? game.removeLetter()
+            : game.addLetter(key)
+        }
+      />
     </div>
   );
 }

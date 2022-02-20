@@ -13,8 +13,10 @@ const initialState = {
   word: "",
   allowedGuesses: 6,
   wordLength: 5,
-  gameState: "playing" as "playing" | "finished",
+  gameState: "playing" as "playing" | "lost" | "won",
 };
+
+export type GameState = typeof initialState;
 
 const events = {
   ADD_LETTER: "ADD_LETTER",
@@ -74,7 +76,7 @@ function isCorrectGuess(guess: WordGuess) {
   );
 }
 
-const appReducer: Reducer<typeof initialState, Event> = (state, event) => {
+const appReducer: Reducer<GameState, Event> = (state, event) => {
   if (state.gameState === "playing") {
     switch (event.type) {
       case events.ADD_LETTER: {
@@ -105,7 +107,12 @@ const appReducer: Reducer<typeof initialState, Event> = (state, event) => {
           const isCorrect = isCorrectGuess(evaluatedGuess);
           return {
             ...state,
-            gameState: isCorrect ? "finished" : "playing",
+            gameState: isCorrect
+              ? "won"
+              : !isCorrect &&
+                state.pastGuesses.length === state.allowedGuesses - 1
+              ? "lost"
+              : "playing",
             currentGuess: [],
             pastGuesses: [...state.pastGuesses, evaluatedGuess],
           };
