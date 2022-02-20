@@ -11,7 +11,7 @@ import type { MetaFunction } from "remix";
 import styles from "./tailwind.css";
 
 export const meta: MetaFunction = () => {
-  return { title: "New Remix App" };
+  return { title: "Schmerdle", description: "Wordle, schmerdle" };
 };
 
 export const links: LinksFunction = () => {
