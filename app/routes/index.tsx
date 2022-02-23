@@ -1,14 +1,14 @@
 import React from "react";
 import { LoaderFunction, useLoaderData } from "remix";
 import { useGame } from "~/utils/game";
-import { getNLetterWord } from "~/utils/words";
 import { isLetter, backspaceCode, enterCode } from "~/utils/misc";
 import { Keyboard } from "~/components/keyboard";
+import { getRandomWord } from "~/data/words";
 
 export const loader: LoaderFunction = async () => {
   const wordLength = 5;
   const allowedGuesses = 6;
-  return { word: await getNLetterWord(wordLength), wordLength, allowedGuesses };
+  return { word: getRandomWord(wordLength), wordLength, allowedGuesses };
 };
 
 export default function Index() {
